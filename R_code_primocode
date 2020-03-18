@@ -1,0 +1,112 @@
+# PRIMO CODICE R ECOLOGIA DEL PAESAGGIO
+library(sp)
+# in alternativa require(sp)
+
+data(meus)
+meuse
+
+# head(meuse) visualizza solo le prime righe
+head(meuse)
+# names(meuse) visualizza solo i nomi delle variabili
+names(meuse)
+
+# summary(meuse) visualizza informazioni ulteriori sul data set
+summary(meuse)
+
+# pairs(meuse) mostra il grafico
+pairs(meuse)
+
+# permette di visualizzare solo levariabili di nostro interesse
+# occorre fare la tilde "~"
+# la virgola è il separatore di argomenti 
+pairs(~ cadmium + copper + lead , data = meuse)
+
+# in R si possono richiamare funzioni precedenti freccia in alto e la premo quattro volte per richiamare names
+# esercizio: aggiungo zinc
+
+# permette di ridurre i passaggi pairs: richiamo names(meuse)
+# in questo caso prendo un subset ("[]") partendo da ","colonna 3 a (":") 6 (ci dà lo stesso grafico)
+
+# per cambiare colore funzioni: col="red" o altri colori 
+pairs(meuse[,3:6], col="blue")
+
+# per cambiare forma punti cercare su google numeri corrispondenti alle forme dei punti e aggiungere pch=20
+pairs(meuse[,3:6], col="blue", pch=20)
+
+# per cambiare la dimensione del punto uso argomento funzione "character exageration" ("cex")
+pairs(meuse[,3:6], col="blue", pch=20, cex=3)
+
+# per cambiare nome al grafico main="Primo pairs"
+pairs(meuse[,3:6], col="blue", pch=20, cex=3, main="Primo pairs")
+
+# Esercizio: inserire "elevation" (settiman variabile)
+pairs(meuse[,3:7], col="blue", pch=20, cex=3, main="Primo pairs")
+
+# funzione "source" per inserire file dall'esterno
+
+panel.correlations <- function(x, y, digits=1, prefix="", cex.cor)
+{
+    usr <- par("usr"); on.exit(par(usr))
+    par(usr = c(0, 1, 0, 1))
+    r1=cor(x,y,use="pairwise.complete.obs")
+    r <- abs(cor(x, y,use="pairwise.complete.obs"))
+
+ 
+
+    txt <- format(c(r1, 0.123456789), digits=digits)[1]
+    txt <- paste(prefix, txt, sep="")
+    if(missing(cex.cor)) cex <- 0.9/strwidth(txt)
+    text(0.5, 0.5, txt, cex = cex * r)
+}
+
+ 
+
+panel.smoothing <- function (x, y, col = par("col"), bg = NA, pch = par("pch"),
+    cex = 1, col.smooth = "red", span = 2/3, iter = 3, ...)
+{
+    points(x, y, pch = pch, col = col, bg = bg, cex = cex)
+    ok <- is.finite(x) & is.finite(y)
+    if (any(ok))
+        lines(stats::lowess(x[ok], y[ok], f = span, iter = iter),
+            col = 1, ...)
+}
+
+ 
+
+
+panel.histograms <- function(x, ...)
+{
+    usr <- par("usr"); on.exit(par(usr))
+    par(usr = c(usr[1:2], 0, 1.5) )
+    h <- hist(x, plot = FALSE)
+    breaks <- h$breaks; nB <- length(breaks)
+    y <- h$counts; y <- y/max(y)
+    rect(breaks[-nB], 0, breaks[-1], y, col=white", ...)
+}
+# la prima funzione "correlation" ci dà le correlazioni fra le variabili
+# la funzione "smoothing" ci darà la linea di correlazione 
+# la funzione "histogram"fa l'istogramma in mezzo alle variabili
+# "lowess" è smoother locale
+
+# "lower.panel" è la parte inferiore del grafico pairs e decido cosa metterci ad esempio le correlazioni
+# "upper.panel" è parte superiore e ci metto lo smoothing, ossia il grafico dei punti con le linee di correlazione
+# "diag.panel" è diagonale e ci metto gli istogrammi
+pairs(meuse[,3:6], lower.panel = panel.correlations, upper.panel = panel.smoothing, diag.panel = panel.histograms)
+
+plot(meuse$cadmium, meuse$copper)
+#fa errore
+
+# per costruire un grafico solo con le variabili "cadmium" e "copper"
+attach(meuse)
+plot(cadmium, copper)
+
+# per cambiare le etichette xlab="" ylab=""
+plot(cadmium, copper, pch=19, col="green", main="Primo plot", xlab="cadmio", ylab="rame")
+
+# per aumentare i caratteri delle etichetti cex.lab=1.5
+plot(cadmium, copper, pch=19, col="green", main="Primo plot", xlab="cadmio", ylab="rame", cex.lab=1.5, cex=2)
+
+
+
+
+
