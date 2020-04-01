@@ -4,6 +4,8 @@ insall.packages("ggplot2")
 library(ggplot2)
 install.packages("spatstat")
 library(spatstat)
+install.packages("rgdal")
+library(rgdal)
 
 # per entrare nella cartella di lavoro 
 setwd("C:/Lab")
@@ -54,6 +56,33 @@ d <- density(covids)
 plot(d)
 points(covids)
 
+### salvare il .RData
 
+# richiamare la cartella di lavoro
+setwd("C:/Lab")
+load("covid.RData")
+ls()
+library(spatstat)
+plot(d)
 
+# palette
+cl <- colorRampPalette(c('yellow','orange','red')) (100)
+plot(d, col=cl)
 
+# Exercise: plot della mappa della densità da verde a blu
+cl2 <- colorRampPalette(c('green','blue')) (200)
+plot(d, col=cl2)
+
+# per richiamare i punti dei casi di covid
+points(covids)
+
+# per inserire gli shapefile delle coste
+library(rgdal)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=TRUE)
+
+# Exercise: plot della mappa di densità con una nuova colorazione e aggiunta delle coastlines
+cl3 <- colorRampPalette(c('green','yellow','red')) (200)
+plot(d, col=cl3)
+points(covids)
+plot(coastlines, add=TRUE)
