@@ -86,3 +86,48 @@ cl3 <- colorRampPalette(c('green','yellow','red')) (200)
 plot(d, col=cl3)
 points(covids)
 plot(coastlines, add=TRUE)
+
+### Exercise: caricare in R il workspace covid.RData (funzione load("...")) e creare una mappa di densità
+
+setwd("C:/Lab")
+load("covid.RData")
+ls()
+library(spatstat)
+plot(d, main="densità covid-19")
+points(covids)
+
+# per inserire gli shapefiles delle coste 
+library(rgdal)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=TRUE)
+
+# interpolazione punti covid-19
+head(covid)
+marks(covids) <- covid$cases
+s <- Smooth(covids)
+plot(s)
+
+# Exercise: plottare s con diversa color palette, punti covids e coastlines shapefiles
+cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
+plot(s, col=cl5, main="stima dei casi covid-19")
+points(covids)
+plot(coastlines, add=T)
+# per vederi i valori dei punti sulla mappa
+text(covids)
+
+### Mappa finale 
+par(mfrow=c(2,1))
+
+# densità 
+cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
+plot(d, col=cl5, main="densità covid-19")
+points(covids)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)
+
+# interpolazione numero di casi
+cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
+plot(s, col=cl5, main="stima dei casi")
+points(covids)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)
