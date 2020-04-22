@@ -131,3 +131,4 @@ plot(s, col=cl5, main="stima dei casi")
 points(covids)
 coastlines <- readOGR("ne_10m_coastline.shp")
 plot(coastlines, add=T)
+
