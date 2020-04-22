@@ -132,3 +132,26 @@ points(covids)
 coastlines <- readOGR("ne_10m_coastline.shp")
 plot(coastlines, add=T)
 
+
+
+### DATI San Marino
+
+setwd("C:/Lab")
+#richiamare la libreria spatstat
+library(spatstat)
+load("Tesi.RData")
+ls()
+head(Tesi)
+attach(Tesi)
+
+summary(Tesi)
+# x varia da 12.42 a 12.46
+# y varia da 43.91 a 43.94
+
+# point pattern: x, y, z
+Tesippp <- ppp(Longitude, Latitude, c(12.41,12.47), c(43.90,43.95))
+
+# densità 
+dT <- density(Tesippp)
+plot(dT)
+points(Tesippp)
