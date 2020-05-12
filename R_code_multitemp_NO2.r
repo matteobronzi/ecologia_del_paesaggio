@@ -56,4 +56,30 @@ plot(EN11, col=cl)
 plot(EN12, col=cl)
 plot(EN13, col=cl)
 
- 
+### Giorno 2
+
+library(raster)
+
+# entrare nella cartella esa_no2 all'interno della cartella Lab
+setwd("C:/lab/esa_no2")
+
+# per assegnare a rlist la lista di file .png
+rlist <- list.files(pattern=".png")
+rlist
+
+# 
+listafinale <- lapply(rlist, raster)
+
+#
+EN <- stack(listafinale)
+
+# scorporare lo stack per andare a fare un'operazione di differenza fra due immagini
+difEN <- EN$EN_0013 - EN$EN_0001
+
+cld <- colorRampPalette(c('blue','white','red'))(100) # 
+plot(difEN, col=cld)
+
+boxplot(EN, horizontal=T)
+
+# per eliminare gli out layers
+boxplot(EN, horizontal=T,outline=F,axes=T) # axes=T argomento di defoult riguardante gli assi del grafico
