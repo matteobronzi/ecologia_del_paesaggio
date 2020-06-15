@@ -1,10 +1,10 @@
-# R code exam
+# R CODE PER L'ESAME DI ECOLOGIA DEL PAESAGGIO (UNIBO)
 
-### Indice 
-# 1. R_code_primocod.r   
+### INDICE
+# 1. R_code_primocode.r   
 # 2. R_code_spatial.r   
-# 3. R_code_spatial_2.r
-# 4. R_code_point_pattern.r  
+# 3. R_code_spatial2.r
+# 4. R_code_point_patterns.r  
 # 5. R_code_teleril.r   
 # 6. R_code_landcover.r   
 # 7. R_code_multitemp.r   
@@ -18,56 +18,59 @@
 ##############################################
 ##############################################
 
-### 1. R code first
+### 1. R CODE PRIMOCODE
 
-# pacchetti utilizzati 
+# PACCHETTI UTILIZZATI: "sp"
 
-install.packages("sp")
-library(sp) # in alternativa require(sp)
+# PER IMPORTARE IN R IL PACCHETTO "sp"
+# install.packages("sp") # PER INSTALLARE IL PACCHETTO "sp"
+library(sp) # IN ALTERNATIVA UTILIZZARE require(sp) 
 
-# funzione data per richiamare il dataset meuse
+# FUNZIONE data() PER VISUALIZZARE I DATA SET (IN QUESTO CASA IL DATA SET "meuse")
 data(meuse)
-meuse
+meuse # PER VISUALIZZARE I VALORI DEL DATA SET RELATIVI ALLA PRESENZA IN SUPERFICIE DI 4 METALLI PESANTI SULLE SPONDE DEL FIUME MEUSE
 
-# head(meuse) visualizza solo le prime righe
+# FUNZIONE head() PER VISUALIZZARE SOLAMENTE LE PRIME RIGHE DEL DATA SET
 head(meuse)
-# names(meuse) visualizza solo i nomi delle variabili
+# FUNZIONE names() PER VISUALIZZARE SOLO I NOMI DELLE VARIABILI
 names(meuse)
 
-# summary(meuse) visualizza informazioni ulteriori sul data set
+# FUNZIONE summary() PER VISUALIZZARE INFORMAZIONI ULTERIORI RELATIVE AL DATA SET 
 summary(meuse)
 
-# pairs(meuse) mostra il grafico
+# FUNZIONE pairs() CONSENTE DI OTTENERE UN GRAFICO, RISULTATO DELLA MATRICE DI CORRELAZIONE FRA LE VARIABILI DEL DATA SET
 pairs(meuse)
 
-# permette di visualizzare solo levariabili di nostro interesse
-# occorre fare la tilde "~"
-# la virgola è il separatore di argomenti 
+# PER VISUALIZZARE SOLO ALCUNE DELLE VARIABILI pairs(~ variabile1 + variabile2 + variabile3, data = meuse)
+# LA VIRGOLA ASSUME LA FUNZIONE DI SEPARATORE FRA GLI ARGOMENTI 
+# L'ARGOMENTO "data" SERVE A SELEZIONARE IL DATA SET DI RIFERIMENTO
 pairs(~ cadmium + copper + lead , data = meuse)
 
-# in R si possono richiamare funzioni precedenti freccia in alto e la premo quattro volte per richiamare names
-# esercizio: aggiungo zinc
+# NOTE: IN R SI POSSONO RICHIAMARE FUNZIONI PRECEDENTI UTILIZZANDO LA FRECCIA IN ALTO
+# permette di ridurre i passaggi
 
-# permette di ridurre i passaggi pairs: richiamo names(meuse)
-# in questo caso prendo un subset ("[]") partendo da ","colonna 3 a (":") 6 (ci dà lo stesso grafico)
 
-# per cambiare colore funzioni: col="red" o altri colori 
+# ESERCIZIO: aggiungere "zinc"
+
+# IN QUESTO CASO SI PRENDE UN subset ("[]") partendo da ","colonna 3 a (":") 6 (si ottiene lo stesso grafico)
+
+# PER CAMBIARE COLORE SI INTRODUCE NELLA FUNZIONE col="colore scelto" (es. col="red"), PRECEDUTO DALLA VIRGOLA PER SEPARARE GLI ARGOMENTI
 pairs(meuse[,3:6], col="blue")
 
-# per cambiare forma punti cercare su google numeri corrispondenti alle forme dei punti e aggiungere pch=20
+# PER CAMBIARE LA FORMA DEI PUNTI DEL GRAFICO: pch="numero corrispondente alla forma prescelta" (es. pch=20)
+# NOTE: CERCARE SU GOOGLE I NUMERI IN R CORRISPONDENTI ALLA FORME DEI PUNTI
 pairs(meuse[,3:6], col="blue", pch=20)
 
-# per cambiare la dimensione del punto uso argomento funzione "character exageration" ("cex")
+# PER CAMBIARE LE DIMENSIONI DEL PUNTO: "cex" (character exageration) (es. cex=3)
 pairs(meuse[,3:6], col="blue", pch=20, cex=3)
 
-# per cambiare nome al grafico main="Primo pairs"
+# PER CAMBIARE NOME AL GRAFICO: main="nome grafico" (es. main="Primo pairs") 
 pairs(meuse[,3:6], col="blue", pch=20, cex=3, main="Primo pairs")
 
-# Esercizio: inserire "elevation" (settiman variabile)
+# ESERCIZIO: inserire "elevation" (settima variabile)
 pairs(meuse[,3:7], col="blue", pch=20, cex=3, main="Primo pairs")
 
-# funzione "source" per inserire file dall'esterno
-
+# FUNZIONE source PER INSERIRE FILE DALL'ESTERNO
 panel.correlations <- function(x, y, digits=1, prefix="", cex.cor)
 {
     usr <- par("usr"); on.exit(par(usr))
@@ -107,12 +110,12 @@ panel.histograms <- function(x, ...)
     y <- h$counts; y <- y/max(y)
     rect(breaks[-nB], 0, breaks[-1], y, col=white", ...)
 }
-# la prima funzione "correlation" ci dà le correlazioni fra le variabili
-# la funzione "smoothing" ci darà la linea di correlazione 
-# la funzione "histogram"fa l'istogramma in mezzo alle variabili
+# LA PRIMA FUNZIONE "correlation" ci dà le correlazioni 
+# LA FUNZIONE "smoothing" ci darà la linea di correlazione 
+# LA FUNZIONE "histogram" fa l'istogramma in mezzo alle variabili
 # "lowess" è smoother locale
 
-# "lower.panel" è la parte inferiore del grafico pairs e decido cosa metterci ad esempio le correlazioni
+# "lower.panel" è la parte inferiore del grafico pairs ed è possibile decidere cosa metterci ad esempio le correlazioni
 # "upper.panel" è parte superiore e ci metto lo smoothing, ossia il grafico dei punti con le linee di correlazione
 # "diag.panel" è diagonale e ci metto gli istogrammi
 pairs(meuse[,3:6], lower.panel = panel.correlations, upper.panel = panel.smoothing, diag.panel = panel.histograms)
@@ -124,10 +127,10 @@ plot(meuse$cadmium, meuse$copper)
 attach(meuse)
 plot(cadmium, copper)
 
-# per cambiare le etichette xlab="" ylab=""
+# PER CAMBIARE LE ETICHETTE SUL GRAFICO: xlab="variabile1" ylab="variabile2" (es. xlab="cadmio, ylab="rame") 
 plot(cadmium, copper, pch=19, col="green", main="Primo plot", xlab="cadmio", ylab="rame")
 
-# per aumentare i caratteri delle etichetti cex.lab=1.5
+# PER AUMENTARE I CARATTERI: cex.lab=1.5
 plot(cadmium, copper, pch=19, col="green", main="Primo plot", xlab="cadmio", ylab="rame", cex.lab=1.5, cex=2)
 
 
@@ -136,57 +139,60 @@ plot(cadmium, copper, pch=19, col="green", main="Primo plot", xlab="cadmio", yla
 ##############################################
 
 
-### 2. R code spatial
+### 2. R CODE SPATIAL
 
-# codice per funzioni spaziali in Ecologia del Paesaggio
+# CODICE PER FUNZIONI SPAZIALI IN ECOLOGIA DEL PAESAGGIO
 
-# richiamare il pacchetto "sp" di R attraverso la funzione library
+# PACCHETTI UTILIZZATI: "sp", "GGally",
+
+# install.pachages("sp")   
+# install.packages("GGally")
 library(sp)
+library(GGally)
 
-# per richiamare i dati del data set "meuse" utilizzo la funzione data
+
+# FUNZIONE data() PER RICHIAMARE IL DATA SET "meuse" 
 data(meuse)
 
-# per richiamare solo le prime righe della tabella utilizzo la funzione head
+# FUNZIONE head() PER RICHIAMARE SOLO LE PRIME RIGHE DEL DATA SET
 head(meuse)
 
-# plot cadmium e lead
+# PLOTTARE "cadmium" E "lead"
 
-# alleghiamo il dataframe con la funzione attach
+# FUNZIONE attach() PER ALLEGARE IL DATA SET 
 attach(meuse)
 
+# FUNZIONE plot() PER LA RAPPRESENTAZIONE GRAFICA
 plot(cadmium,lead,col="red",pch=19,cex=2)
 
-# exercise: plot di copper e zinco con simbolo triangolo(17) e colore verde
+# ESERCIZIO: plot di copper e zinco con simbolo triangolo(17) e colore verde
 plot(copper,zinc,col="green",pch=17)
 
-# per cambiare le etichette si utilizzano xlab e ylab
+# PER CAMBIARE LE ETICHETTE DEL GRAFICO: xlab="variabile1" e ylab="variabile2"
 plot(copper,zinc,col="green",pch=17,cex=2,xlab="rame",ylab="zinco")
 
-# per creare multiframe o multipanel si utilizza la funzione par(mfrow)
+# FUNZIONE par(mfrow=c(numero righe, numero colonne)) PER CREARE MULTIFRAME O MULTIPANEL [es. par(mfrow=c(1,2))]
 par(mfrow=c(1,2))
 plot(cadmium,lead,col="red",pch=19,cex=2)
 plot(copper,zinc,col="green",pch=17,cex=2)
 
-# per invertire i grafici riga/colonna in colonna/riga
+# PER INVERTIRE I GRAFICI riga/colonna IN colonna/riga
 par(mfrow=c(2,1))
 plot(cadmium,lead,col="red",pch=19,cex=2)
 plot(copper,zinc,col="green",pch=17,cex=2)
 
-# multiframe automatico
-install.packages("GGally")
-library(GGally)
-
-# la funzione ggpairs costruisce una matrice di plots da un dato data set
+# MULTIFRAME AUTOMATICO 
+# FUNZIONE ggpairs COSTRUISCE UNA MATRICE DI PLOTS DA UN DETERMINATO DATA SET
 ggpairs(meuse[,3:6])
 
-# Spatial
+# SPAZIALIZZAZIONE
 
 head(meuse)
 
 coordinates(meuse)=~x+y
 plot(meuse)
 
-# per plottare i dati spazialmente utilizzo la funzione spplot
+# FUNZIONE spplot() PER PLOTTARE SPAZIALMENTE I DATI 
 spplot(meuse,"zinc")
 
 
