@@ -200,64 +200,68 @@ spplot(meuse,"zinc")
 ##############################################
 ##############################################
 
-### 3. R code spatial 2
+### 3. R CODE SPATIAL 2 
 
-# per installare la libreria sp
-install.packages("sp")
+# PACCHETTI UTILIZZATI: "sp"
 
-# per richiamare la libreria sp
+# install.packages("sp")
 library(sp)
 
-# per richiamare il data set meuse
+# FUNZIONE data() PER RICHIAMARE IL DATA SET meuse
 data(meuse)
 
-# per richiamare solo le prime righe del data set usare la funzione head
+# FUNZIONE head() PER RICHIAMARE SOLO LE PRIME RIGHE DEL DATA SET
 head(meuse)
 
-# per ottenere le coordinate del data set
+# FUNZIONE coordinates(data set)=~x+y PER OTTENERE LE COORDINATE DEL DATA SET 
 coordinates(meuse)=~x+y
 
-# spplot dei dati dello zinco
+# PER CREARE UN spplot DEI DATI RELATIVI ALLO ZINCO
 spplot(meuse,"zinc")
 
-# Exercise: spplot dei dati del rame
+# ESERCIZIO: spplot dei dati del rame
 
-# per richiamare i nomi degli argomenti si possono utilizzare due differenti funzioni
+# PER RICHIAMARE I NOMI DEGLI ARGOMENTI SI POSSONO UTILIZZARE DUE DIFFERENTI FUNZIONI: head() o name()
 head(meuse)
 name(meuse)
 
-# spplot dei dati del rame 
+# spplot DEI DATI DEL RAME
 spplot(meuse,"copper")
 
-# funzione bubble
+# FUNZIONE bubble() PER GENERARE UN "BUBBLE PLOT"
 bubble(meuse,"zinc")
 
-# Exercise: bubble del rame, colore rosso
+# ESERCIZIO: bubble del rame, colore rosso
 bubble(meuse,"zinc",col="red")
 
-# Exercise:
-# prendiamo dei dati realtivia a formanifireri (Sofia) e al carbon capture (Marco)
-# array 
+# ESERCIZIO: inserire dei dati realtivi a due casi di studio: formanifireri (Sofia) e al carbon capture (Marco)
+# ARRAY
 foram <- c(10, 20, 35, 55, 67, 80)
 carbon <- c(5, 15, 30, 70, 85, 99)
 
-# plottiamo i dati per valutare le correlazioni 
+# PLOTTARE I DATI PER VALUTARE LE CORRELAZIONI 
 
-# Dati dall'esterno sul covid-19
-# Cartella da creare su Windows: C:/Lab, su Linux:~/Lab
+# DATI COVID-19
+
+# IMPORTARE DATI COVID DALL'ESTERNO
+    
+# CREARE UNA NUOVA CARTELLA E RICHIAMARE LA WORKING DIRECTORY
+# SU Windows: C:/Lab
+# SU Linux: ~/Lab
+# SU Mac: 
 setwd("C:/Lab") # Windows
 
-# per leggere una tabella funzione
+# FUNZIONE read.table("") PER LEGGERE UNA TABELLA
 read.table("covid_agg.csv"),head=TRUE)
 
-# per associare la lettura della tabella a covid
+# ASSOCIARE LA TABELLA A covid
 covid <- read.table("covid_agg.csv"),head=TRUE)
 
 ##############################################
 ##############################################
 ##############################################
 
-### 4. R code point patterns 
+### 4. R CODE POINT PATTERNS
 
 # codice per analisi dei point patterns
 
