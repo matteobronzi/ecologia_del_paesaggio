@@ -14,6 +14,9 @@
 # 11. R_code_crop.r
 # 12. R_code_sdm.r
 
+# dati da Copernicus: https://land.copernicus.vgt.vito.be/PDF/portal/Application.html
+
+
 ##############################################
 ##############################################
 ##############################################
@@ -252,10 +255,11 @@ carbon <- c(5, 15, 30, 70, 85, 99)
 setwd("C:/Lab") # Windows
 
 # FUNZIONE read.table("") PER LEGGERE UNA TABELLA
-read.table("covid_agg.csv"),head=TRUE)
+read.table("covid_agg.csv"),header=TRUE)
 
 # ASSOCIARE LA TABELLA A covid
-covid <- read.table("covid_agg.csv"),head=TRUE)
+# L'ARGOMENTO header=T VUOLE DIRE CHE NELLA PRIMA RIGA DEL FILE SONO CONTENUTI I NOMI DELLE VARIABILI
+covid <- read.table("covid_agg.csv"),header=TRUE)
 
 ##############################################
 ##############################################
@@ -263,25 +267,29 @@ covid <- read.table("covid_agg.csv"),head=TRUE)
 
 ### 4. R CODE POINT PATTERNS
 
-# codice per analisi dei point patterns
+# CODICE R PER L'ANALISI SPAZIALE DI PUNTI (POINT PATTERN ANALYSIS)
+    
+# PACCHETTI UTILIZZATI: "ggplot2", "spatstat", "rgdal"
 
-insall.packages("ggplot2")
+#insall.packages("ggplot2")
+#install.packages("spatstat")
+#install.packages("rgdal")
 library(ggplot2)
-install.packages("spatstat")
 library(spatstat)
-install.packages("rgdal")
-library(rgdal)
+.library(rgdal)
 
-# per entrare nella cartella di lavoro 
+# PER ENTRARE NELLA CARTELLA DI LAVORO (Lab)
 setwd("C:/Lab")
 
-# per importare dati
-covid <- read.table("covid_agg.csv", head=TRUE)
+# PER IMPORTARE DATI RELATIVI AL COVID-19 
+# L'ARGOMENTO header=T VUOLE DIRE CHE NELLA PRIMA RIGA DEL FILE SONO CONTENUTI I NOMI DELLE VARIABILI
+covid <- read.table("covid_agg.csv", header=TRUE)
 
-# per visualizzare le prime righe della tabella utilizzare la funzione head
+# FUNZIONE head() PER VISUALIZZARE SOLO LE PRIME RIGHE DELLA TABELLA 
 head(covid)
 
-# plottiamo i primi dati. Per collegare le colonne al proprio data set si utilivva il $ o la funzione attach
+# PLOTTARE I PRIMI DATI
+# PER COLLEGARE LE COLONNE AL PROPRIO DATA SET SI UTILIZZA IL "$" (dollaro) O LA FUNZIONE attach()
 attach(covid)
 plot(covid$country, covid$cases)
 
@@ -290,28 +298,29 @@ plot(covid$country,covid$cases,las=1) # horizontal labels
 plot(covid$country,covid$cases,las=2) # perpendicular labels
 plot(covid$country,covid$cases,las=3) # vertical labels
 
-# per modificare le labels si utilizza l'argomento cex.axis
+# PER MODIFICARE LE labels (etichette) SI UTILIZZA L'ARGOMENTO "cex.axis" (es. cex.axis=0,5)
 plot(covid$country,covid$cases,las=3, cex.axis=0,5) 
 
-# per richiamare il pacchetto ggplot e i dati mpg
-library(ggplot2)
+# UTILIZZIAMO IL DATA SET "mpg" CONTENUTO ALL'INTERNO DEL PACCHETTO "ggplot2"
+# IL DATA SET "mpg" CONTIENE DATI RELATIVI AL RISPARMIO DI CARBURANTE NEGLI ANNI 1999 E 2008 PER 38 MODELLI DI AUTO POPOLARI
 data(mpg)
 head(mpg)
 
-# data
-# aes
-# tipo di geometria 
+# FUNZIONE ggplot() PER CREARE GRAFICI CON IL PACCHETTO "ggplot2"
+# PER GENERARE UN GRAFICO CON ggplot() BISOGNA INDICARE: MAPPATURA (aes) E GEOMETRIA (geom) DELLE VARIABILI
+# aes() (aesthetic) DESCRIVE L’"ESTETICA" CON CUI VENGONO ASSEGNATE LE VARIABILI AGLI ASSI ("x=" e "y=" ARGOMENTI DELLA FUNZIONE aes)
+# geom_ SPECIFICA COSA VOGLIAMO RAPPRESENTARE (es. geom_point)
 ggplot(mpg,aes(x=displ,y=hwy)) + geom_point()
 
-# per cambiare il tipo di geometria 
+# PER CAMBIARE IL TIPO DI GEOMETRIA 
 ggplot(mpg,aes(x=displ,y=hwy)) + geom_line()
 
-# ggplot di covid
+# ggplot DEI DATI COVID-19
 ggplot(covid,aes(x=lon,y=lat,size=cases)) + geom_point()
 
-# per creare una mappa di densità di covid 
+# CREARE UNA MAPPA DI DENSITA' DEI DATI COVID-19
 
-# creare un data set per spatstat
+# CREARE UN DATA SET PER spatstat
 attach(covid)
 covids <- ppp(lon, lat, c(-180,180), c(-90,90))
 
