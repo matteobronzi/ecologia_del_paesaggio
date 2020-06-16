@@ -238,7 +238,7 @@ bubble(meuse,"zinc")
 bubble(meuse,"zinc",col="red")
 
 # ESERCIZIO: inserire dei dati realtivi a due casi di studio: formanifireri (Sofia) e al carbon capture (Marco)
-# ARRAY
+# CREARE UN ARRAY
 foram <- c(10, 20, 35, 55, 67, 80)
 carbon <- c(5, 15, 30, 70, 85, 99)
 
@@ -321,47 +321,60 @@ ggplot(covid,aes(x=lon,y=lat,size=cases)) + geom_point()
 # CREARE UNA MAPPA DI DENSITA' DEI DATI COVID-19
 
 # CREARE UN DATA SET PER spatstat
+# FUNZIONE "ppp" PER RAPPRESENTARE UN DATA SET DI UN POINT PATTERN IN UN PIANO BIDIMENSIONALE
+# GLI ARGOMENTI "lon" (longitudine) e "lat" (latitudine) RAPPRESENTANO I VETTORI DELLE COORDINATE (x;y)
 attach(covid)
 covids <- ppp(lon, lat, c(-180,180), c(-90,90))
 
-# densità
+# ASSOCIARE LA FUNZIONE density() (per il calcolo della densità dei punti covid) A "d"
 d <- density(covids)
 
+# PLOTTARE "d"
+# FUNZIONE points() PER VISUALIZZARE I PUNTI RELATIVI AI DATI SPAZIALIZZATI DEL DATA SET COVID-19
 plot(d)
 points(covids)
 
-### salvare il .RData
+# SALVARE L'.Rdata
 
-# richiamare la cartella di lavoro
+### RICHIAMARE L'.RData
+    
+# RICHIAMARE LA CARTELLA DI LAVORO (Lab)
 setwd("C:/Lab")
 load("covid.RData")
 ls()
+# RICHIAMARE IL PACCHETTO "spatstat"
 library(spatstat)
 plot(d)
 
-# palette
+# FUNZIONE colorRampPalette() PER GENERARE UNA PALETTE DI COLORI DA UTILIZZAR NEL PLOT
+# INSERIRE UN ARRAY DI COLORI COME ARGOMENTO DELLA FUNZIONE colorRampPalette()
+# FUORI DALLA FUNZIONE FRA PARENTESI SI AGGIUNGE IL NUMERO DI CLASSI IN CUI SI VOGLIONO SUDDIVIDERE I DATI (es. (100))
+# ASSEGNARE LA colorRampPalette() A "cl"
+# PER PLOTTARE d CON LA colorRampPalette CREATA: col= cl
 cl <- colorRampPalette(c('yellow','orange','red')) (100)
 plot(d, col=cl)
 
-# Exercise: plot della mappa della densità da verde a blu
+# ESERCIZIO: plot della mappa della densità da verde a blu
 cl2 <- colorRampPalette(c('green','blue')) (200)
 plot(d, col=cl2)
 
-# per richiamare i punti dei casi di covid
+# PER RICHIAMARE I PUNTI RELATIVI AI DATI COVID-19
 points(covids)
 
-# per inserire gli shapefile delle coste
+# FUNZIONE readOGR() PER IMPORTARE SHAPEFILE (IN QUESTO CASO GLI SHAPEFILES RELATIVI ALLE COSTE DEL GLOBO)
+# ASSEGNARE LA FUNZIONE readOGR() A "coastlines"
+# add=TRUE PER AGGIUNGERE IL NUOVO PLOT ALLO STESSO GRAFICO 
 library(rgdal)
 coastlines <- readOGR("ne_10m_coastline.shp")
 plot(coastlines, add=TRUE)
 
-# Exercise: plot della mappa di densità con una nuova colorazione e aggiunta delle coastlines
+# ESERCIZIO: plot della mappa di densità con una nuova colorazione e aggiunta delle coastlines
 cl3 <- colorRampPalette(c('green','yellow','red')) (200)
 plot(d, col=cl3)
 points(covids)
 plot(coastlines, add=TRUE)
 
-### Exercise: caricare in R il workspace covid.RData (funzione load("...")) e creare una mappa di densità
+# ESERCIZIO2: caricare in R il workspace covid.RData (funzione load("...")) e creare una mappa di densità
 
 setwd("C:/Lab")
 load("covid.RData")
@@ -370,47 +383,48 @@ library(spatstat)
 plot(d, main="densità covid-19")
 points(covids)
 
-# per inserire gli shapefiles delle coste 
+# INSERIRE GLI SHAPEFILE DELLE COSTE
 library(rgdal)
 coastlines <- readOGR("ne_10m_coastline.shp")
 plot(coastlines, add=TRUE)
 
-# interpolazione punti covid-19
+# INTERPOLAZIONE DEI PUNTI COVID-19
+# FUNZIONE marks() PER ESTRARRE O MODIFICARE I SIMBOLI ASSEGNATI AD UN DETERMINAT DATA SET DI UN POINT PATTERN
 head(covid)
 marks(covids) <- covid$cases
 s <- Smooth(covids)
 plot(s)
 
-# Exercise: plottare s con diversa color palette, punti covids e coastlines shapefiles
+# ESERCIZIO: plottare covids con una diversa color palette (punti e shapefile delle coste)
 cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
 plot(s, col=cl5, main="stima dei casi covid-19")
 points(covids)
 plot(coastlines, add=T)
-# per vederi i valori dei punti sulla mappa
+# FUNZIONE text() PER VISUALIZZARE IL VALORE DEI PUNTI SULLA MAPPA
 text(covids)
 
-### Mappa finale 
+### MAPPA FINALE 
 par(mfrow=c(2,1))
 
-# densità 
+# DENSITA'
 cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
 plot(d, col=cl5, main="densità covid-19")
 points(covids)
 coastlines <- readOGR("ne_10m_coastline.shp")
 plot(coastlines, add=T)
 
-# interpolazione numero di casi
+# INTERPOLAZIONE NUMERO DI CASI
 cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
 plot(s, col=cl5, main="stima dei casi")
 points(covids)
 coastlines <- readOGR("ne_10m_coastline.shp")
 plot(coastlines, add=T)
 
-### DATI San Marino (caso di studio)
+### DATI SAN MARINO (caso di studio)
 
 setwd("C:/Lab")
-#richiamare la libreria spatstat
 library(spatstat)
+# CARICARE "Tesi.RData"
 load("Tesi.RData")
 ls()
 head(Tesi)
@@ -420,10 +434,10 @@ summary(Tesi)
 # x varia da 12.42 a 12.46
 # y varia da 43.91 a 43.94
 
-# point pattern: x, y, z
+# POINT PATTERN : x, y, z
 Tesippp <- ppp(Longitude, Latitude, c(12.41,12.47), c(43.90,43.95))
 
-# densità 
+# DENSITA'
 dT <- density(Tesippp)
 plot(dT)
 points(Tesippp)
@@ -431,46 +445,47 @@ points(Tesippp)
 dev.off()
 
 # 28/04
+    
 setwd("/Users/enricopriarone/lab")
 load("Tesi.RData")
 ls()
-# Ottengo i file presenti:
+# OTTENGO I FILE PRESENTI:
 # "dT" è density map di Tesippp
 # "Tesi" è un dataset
 # "Tesippp" è il point pattern del file "Tesi" (da libreria "Spatstat")
 
-# Associamo i valori che vogliamo stimare
+# ASSOCIAMO I VALORI CHE VOGLIAMO STIMARE
 library(spatstat)
 plot(dT)
 points(Tesippp, col="green")
 
-# Andiamo a stimare la ricchezza specifica
-# Con "head" vedo che si trova sotto "Species_richness"
-# "marks" va a prendere i valori dalla tabella e li associa ai punti del ppp
+# ANDIAMO A STIMARE LA RICCHEZZA SPECIFICA
+# CON head() VEDO CHE SI TROVA SOTTO A "Species_richness"
+# FUNZIONE marks() PRENDE I VALORI DELLA TABELLA E LI ASSOCIA AI PUNTI DEL PPP
 head(Tesi)
 marks(Tesippp) <- Tesi$Species_richness
 
-# Creo mappa e l'associo a Smooth
+# ASSOCIARE LA FUNZIONE Smooth() A "interpol"
 interpol <- Smooth(Tesippp)
 
-# Usiamo file su San Marino
-# Carico libreria "rgdal"
+# DATI SAN MARINO 
+    
 library(rgdal)
 sanmarino <- readOGR("San_Marino.shp")
 plot(sanmarino)
-plot(interpol, add=T) # Importante! Con "T"/"True" aggiunge nuova mappa a quella precedente
+plot(interpol, add=T) 
 points(Tesippp,col="green")
-# Mappa va a sovrapporsi al territorio di San Marino
-plot(sanmarino, add=T) # Così i confini di Stato si sovrappongono al plot "interpol"
+# MAPPA VA A SOVRAPPORSI AI CONFINI DI SAN MARINO 
+plot(sanmarino, add=T) 
 
-# Esercizio: plot multiframe di densità e interpolazione
+# ESERCIZIO: plot multiframe di densità e interpolazione
 par(mfrow=c(2,1))
 plot(dT, main="Densità di punti")
 points(Tesippp, col="green")
 plot(interpol, main="Stima della ricchezza di specie")
 points(Tesippp, col="green")
 
-# Esercizio: inverto la disposizione del grafico
+# ESERCIZIO2: inverto la disposizione del grafico
 par(mfrow=c(1,2))
 plot(dT, main="Densità di punti")
 points(Tesippp, col="green")
