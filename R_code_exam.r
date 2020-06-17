@@ -276,7 +276,7 @@ covid <- read.table("covid_agg.csv"),header=TRUE)
 #install.packages("rgdal")
 library(ggplot2)
 library(spatstat)
-.library(rgdal)
+library(rgdal)
 
 # PER ENTRARE NELLA CARTELLA DI LAVORO (Lab)
 setwd("C:/Lab")
@@ -498,23 +498,21 @@ dev.off()
 ##############################################
 ##############################################
 
-### 5. R code teleril 
+### 5. R CODE TELERIL
 
-# Codice R telerivelamento per analisi di immagini satellitari 
+# CODICE R PER L'ANALISI DI IMMAGINI SATELLITARI
+    
+# PACCHETTI UTILIZZATI: "raster", "RStoolbox"
 
-# pacchetti utilizzati: raster, RStoolbox
-install.packages("raster")
+# install.packages("raster")
+# install.packages("RStoolbox")
 library(raster)
-install.packages("RStoolbox")
 library(RStoolbox)
 
-# per entrare nella cartella di lavoro
 setwd("C:/Lab")
 
-# per caricare dati dall'esterno e associarli ad una certa immagine si utilizza la funzione brick
+# FUNZIONE brick() PER IMPORTARE DATI DALL'ESTERNO E ASSOCIARLI AD UNA CERTA IMMAGINE
 p224r63_2011 <- brick("p224r63_2011_masked.grd")
-
-# per plottare l'immagine 
 plot(p224r63_2011)
 
 # B1: blue
@@ -525,27 +523,32 @@ plot(p224r63_2011)
 # B6: thermal infrared
 # B7: medium infrared
 
-# save .RData
+# SALVARE L'.RData
 
-# per ricaricare il file .RData utilizzare la funzione load
-load("teleril.RData)
+# FUNZIONE load("") PER RICARICARE L'.RData
+load("teleril.RData")
 ls()
-library(raster)
+
+
 plot(p224r63_2011)
-# per cambiare la palette di colori dell'immagine in scala di grigi
+# CAMBIARE LA PALETTE DI COLORI IN SCALA DI GRIGI
 cl <- colorRampPalette(c('black','grey','light grey'))(100) 
 plot(p224r63_2011, col=cl)
-# plottare l'immagine con una palette differente
+    
+# ESERCIZIO: plottare l'immagine con una palette differente
 clb <- colorRampPalette(c('dark blue','blue','light blue'))(100) 
-# la funzione attach(dataframe) non è utilizzabile con il pacchetto raster
-# simbolo che lega la colonna (la banda) al dataset (immagine satellitare):
+
+# NOTE: la funzione attach(dataframe) non è utilizzabile con il pacchetto raster
+# "$" LEGA LA COLONNA (LA BANDA) AL DATASET (IMMAGINE SATELLITARE) (es. p224r63$B1_sre)
 plot(p224r63_2011$B1_sre, col=clb)
-#Exercise: plottare la banda del NIR con colorRampPalette che varia dal rosso all'arancione al giallo
+
+#ESERCIZIO: plottare la banda del NIR con colorRampPalette che varia dal rosso all'arancione al giallo
 clnir <- colorRampPalette(c('red','orange','yellow'))(100)
 plot(p224r63_2011$B4_sre, col=clnir)
-# multiframe
+
+# MULTIFRAME
 par(mfrow=c(2,2))
- # blue
+# blue
 clb <- colorRampPalette(c('dark blue','blue','light blue'))(100) # 
 plot(p224r63_2011$B1_sre, col=clb)
 # green
@@ -557,42 +560,49 @@ plot(p224r63_2011$B1_sre, col=clr)
 # nir
 clnir <- colorRampPalette(c('red','orange','yellow'))(100)
 plot(p224r63_2011$B4_sre, col=clnir)
+
 dev.off()
-# natural colors
+
+# NATURAL COLOR:
 # tre componenti: R G B
 # tre bande: R= banda del rosso, G= banda del verde, B= banda del blu
-plotRGB(p224r63_2011, r=3, g=2, b=1)
-# plotRGB: no!
-# stretch dei colori con tipologia Lineare "Lin"
+plotRGB(p224r63_2011, r=3, g=2, b=1) # plotRGB: no!
+# STRETCH DEI COLORI CON TIPOLOGIA Lineare ("Lin")
 plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin")
-# false colours (andiamo ad introdurre la banda nir, non visibile ad occhio nudo)
+
+# FALSE COLOR (andiamo ad introdurre la banda nir, non visibile ad occhio nudo)
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
-# salvataggio pdf immagine
+
+# FUNZIONE pdf""() PER SALVARE L'IMMAGINE IN PDF
 pdf("primo_grafico")
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
+
 dev.off()
+    
 par(mfrow=c(2,1))
 plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin")
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
-#Exercise: nir nella componente green
+
+# ESERCIZIO: nir nella componente green
 plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="Lin")
-#Exercise: nir nella componente blue
+# ESERCIZIO2: nir nella componente blue
 plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="Lin")
-# Day 2
-# per entrare nella cartella di lavoro
+
+
+### GIORNO 2
+
 setwd("C:/lab/") # windows
 # setwd("~/lab/") # linux
 # setwd("/Users/nome/Desktop/lab") # mac
-# richiamare libreria raster
+
 library(raster)
-# richiamare l'RData con l'area di lavoro 
 load("teleril.RData")
-# list
 ls()
-# per importare l'immagine satellitare utilizzare la funzione brick
+
 p224r63_1988 <- brick("p224r63_1988_masked.grd")
-# per plottare l'immagine satellitare
 plot(p224r63_1988)
+
+    
 # B1: blue
 # B2: green
 # B3: red
@@ -600,9 +610,9 @@ plot(p224r63_1988)
 # B5: medium infrared
 # B6: thermal infrared
 # B7: medium infrared
-# multiframe
+
 par(mfrow=c(2,2))
- # blue
+# blue
 clb <- colorRampPalette(c('dark blue','blue','light blue'))(100) # 
 plot(p224r63_1988$B1_sre, col=clb)
 # green
@@ -614,90 +624,114 @@ plot(p224r63_1988$B1_sre, col=clr)
 # nir
 clnir <- colorRampPalette(c('red','orange','yellow'))(100)
 plot(p224r63_1988$B4_sre, col=clnir)
-# per chiudere la finestra
+
+
 dev.off()
+
+    
 # B1: blue - 1
 # B2: green - 2
 # B3: red - 3
 # B4: near infrared (nir) - 4
-# natural colors
+
+# NATURAL COLOR
 # tre componenti: R G B
 # tre bande: R= banda del rosso, G= banda del verde, B= banda del blu
 plotRGB(p224r63_1988, r=3, g=2, b=1)
-# plotRGB da sola non funziana, va aggiuto l'argomento stretch
-# stretch dei colori con tipologia Lineare "Lin"
 plotRGB(p224r63_1988, r=3, g=2, b=1, stretch="Lin")
-# Exercise: plottare l'immagine usando il sensore nir al posto della componente r nello spazio RGB
+
+# ESERCIZIO: plottare l'immagine usando il sensore nir al posto della componente r nello spazio RGB
 plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="Lin")
-# plottare le immagini del 1988 e del 2011 per analizzare i cambiamenti
+
+# PLOTTARE LE IMMAGINI DEL 1988 E DEL 2011 PER ANALIZZARE I CAMBIAMENTI
 par(mfrow=c(2,1))
 plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="Lin")
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
+
 dev.off()
-# spectral indices
+
+# SPECTRAL INDICES
 # dvi1988 = nir1988 - red1988
 dvi1988 <- p224r63_1988$B4_sre - p224r63_1988$B3_sre
-# plottare l'indice dvi1988
+
 plot(dvi1988)
-# Exercise: plottare l'indice dvi per il 2011
+# ESERCIZIO: plottare l'indice dvi per il 2011
 # dvi2011 = nir2011 - red2011
 dvi2011 <- p224r63_2011$B4_sre - p224r63_2011$B3_sre
-# plottare l'indice dvi2011
+
 plot(dvi2011)
+
 dev.off()
-# cambiare la palette di colori
+
 cldvi <- colorRampPalette(c('light blue','light green','green'))(100) 
 plot(dvi2011, col=cldvi)
-# multitemporal analysis
+
+# MULTITEMPORAL ANALYSIS
 difdvi <- dvi2011 - dvi1988
 plot(difdvi)
-#cambiare la palette di colori 
+
 cldifdvi <- colorRampPalette(c('red','white','blue'))(100)  
 plot(difdvi, col=cldifdvi)
+
 dev.off()
-# visualizzare gli outputs
+
+# VISUALIZZARE GLI OUTPUTS
 # multiframe 1988rgb, 2011rgb, difdvi
 par(mfrow=c(3,1))
 plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="Lin")
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
 plot(difdvi, col=cldifdvi)
+
 dev.off()
-# ricampionare l'immagine del 2011
+
+# RICAMPIONARE L'IMMAGINE DEL 2011
 p224r63_2011lr <- aggregate(p224r63_2011, fact=10)
-# plottare le due immagini a diversa risoluzione
+
+
 par(mfrow=c(2,1))
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
 plotRGB(p224r63_2011lr, r=4, g=3, b=2, stretch="Lin")
 dev.off()
-# lower resolution
+
+# LOWER RESOLUTION
 p224r63_2011lr50 <- aggregate(p224r63_2011, fact=50)
 # original 30m <- resampled 1500m 
-# plottare le tre immagini con risoluzioni diverse
+
+# PLOT DELLE TRE IMMAGINI CON RISOLUZIONI DIVERSE
 par(mfrow=c(3,1))
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
 plotRGB(p224r63_2011lr, r=4, g=3, b=2, stretch="Lin")
 plotRGB(p224r63_2011lr50, r=4, g=3, b=2, stretch="Lin")
+
 dev.off()
-# calcolare il dvi2011lr50
+    
+# CALCOLARE IL dvi2011lr50
 dvi2011lr50 <- p224r63_2011lr50$B4_sre - p224r63_2011lr50$B3_sre
 plot(dvi2011lr50)
+
 dev.off()
-# ricampionare l'immagine del 1988
+
+# RICAMPIONARE L'IMMAGINE DEL 1988
 p224r63_1988lr50 <- aggregate(p224r63_1988, fact=50)
-# calcolare il dvi1988lr50
+
+# CALCOLARE IL dvi1988lr50
 dvi1988lr50 <- p224r63_1988lr50$B4_sre - p224r63_1988lr50$B3_sre
 plot(dvi1988lr50)
+
 # multitemporal analysis lr50 (low resolution)
 difdvilr50 <- dvi2011lr50 - dvi1988lr50
 plot(difdvilr50)
-# plottare la difdvilr50 con la color palette "cldifdvi"
+
 plot(difdvilr50,col=cldifdvi)
+
 dev.off()
-# plottare la difdvi (ad alta definizione) con la difdvilr50 (a bassa risoluzione)
+
+# PLOTTARE LA difdvi (ad alta definizione) CON LA difdvilr50 (a bassa risoluzione)
 par(mfrow=c(2,1))
 plot(difdvi, col=cldifdvi)
 plot(difdvilr50, col=cldifdvi)
     
+dev.off()
 
 ##############################################
 ##############################################
@@ -707,43 +741,47 @@ plot(difdvilr50, col=cldifdvi)
 
 # CODICE R PER ANALISI DELLA COPERTURA DI SUOLO 
 
+# PACCHETTI UTILIZZATI: "raster", "RStoolbox"
+
+# install.packages("raster")
+# install.packages("RStoolbox")    
+library(raster)
+library(RStoolbox)
+
+    
 setwd("/Users/enricopriarone/lab")
 load(".RData")
 ls()
-library(raster)
 
-# Uso funzione che impila e importa i dati
+
 p224r63_2011 <- brick("p224r63_2011_masked.grd")
 install.packages("RStoolbox")
 library(RStoolbox)
 
-# Faccio RGB
+# RGB
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
 
-# Accorpa i pixel in quattro classi:
-# Ottengo un vero e proprio modello
+# FUNZIONE unsuperClass() ACCORPA I PIXEL IN QUATTRO CLASSI (es. unsuperCLass(immagine, nClasses=4)
 p224r63_2011c <- unsuperClass(p224r63_2011, nClasses=4)
 
-# Visualizzo le informazioni
+# VISUALIZZARE LE INFORMAZIONI
 p224r63_2011c
-
-# Plotto la mappa
+    
 plot(p224r63_2011c$map)
-
-# Stabiliamo noi una legenda
+    
 clclass <- colorRampPalette(c('red', 'green', 'blue', 'black'))(100) 
 plot(p224r63_2011c$map, col=clclass)
 
-# Provo con due classi
+# FUNZIONE unsuperClass() UTILIZZANDO DUE CLASSI ANZICHE' 4
 p224r63_2011c <- unsuperClass(p224r63_2011, nClasses=2)
 plot(p224r63_2011c$map)
 clclass2 <- colorRampPalette(c('red', 'black'))(100) 
 plot(p224r63_2011c$map, col=clclass2)
+
 dev.off()
 
-# In funzione del numero di classi aumenta l'incertezza dell'algoritmo auomatico di classificazione
-# riportando potenzialmente classi leggermente differenti
-# Con 2 classi l'incertezza è più bassa che con 4
+# NOTE: In funzione del numero di classi aumenta l'incertezza dell'algoritmo auomatico di classificazione
+# NOTE: Con 2 classi l'incertezza è più bassa che con 4
 
 ##############################################
 ##############################################
@@ -753,39 +791,48 @@ dev.off()
     
 # CODICE R PER ANALISI MULTITEMPORALE DELLA VARIAZIONE DEL LAND COVER ATTRAVERSO IMMAGINI TELERILEVATE 
 
-setwd("/Users/enricopriarone/lab")
-install.packages("Rcmdr")
+# PACCHETTI UTILIZZATI: "raster", "RStoolbox", "ggplot2", "Rcmdr", "gridExtra" 
+
+# install.packages("raster")
+# install.packages("RStoolbox")
+# install.packages("ggplot2")
+# install.packages("Rcmdr")
+# install.packages("gridExtra")
+
 library(raster)
 library(RStoolbox)
 library(ggplot2)
+library(Rcmdr)
+library(gridExtra)
 
-# per caricare l'immagine satellitare da cartella "lab" attraverso funzione di raster "brick"
+setwd("/Users/enricopriarone/lab") # windows
+
+# IMPORTARE LE IMMAGINI DALLA CARTELLA DI LAVORO (Lab)
 defor1 <- brick("defor1_.jpg")
 defor2 <- brick("defor2_.jpg")
 
 # defor1_.1 = NIR
 # defor1_.2 = red
 # defor1_.3 = green
-# associare la banda del rosso a NIR, verde a rosso e blu a verde
+# ASSOCIARE LA BANDA DEL "rosso" AL "nir", DEL "verde" AL "rosso" E DEL "blu" AL "verde"
 plotRGB(defor1, r=1, g=2, b=3, stretch="Lin")
 plotRGB(defor2, r=1, g=2, b=3, stretch="Lin")
 
-# per usare due classi non supervisionate: non spieghiamo al computer la divisione
-# Computer raggruppa pixel che sembrano simili tra loro
+# PER USARE DUE CLASSI NON SUPERVISIONATE (ossia non spieghiamo al computer la divisione)
+# NOTE: Computer raggruppa pixel che sembrano simili tra loro
 d1c <- unsuperClass(defor1, nClasses=2)
-d1c # Visualizzo i suoi dettagli
+d1c # visualizzo dettagli
 
-# per creare la mappa
 plot(d1c$map)
 cl <- colorRampPalette(c('black','green'))(100)
 plot(d1c$map, col=cl)
 
-# esempio su significato dollaro
+# NOTE: esempio sul significato dollaro:
 # mappageologica <- geomap(im_sat, nClasees=...)
 # plot (mappageologica$lito)
 # plot(mappageologica$lineaments)
 
-# Exercise: classificare con due classi l'immagine satellitare defor2
+# ESERCIZIO: classificare con due classi l'immagine satellitare defor2
 d2c <- unsuperClass(defor2, nClasses=2)
 d2c
 plot(d2c$map)
@@ -793,21 +840,20 @@ plot(d2c$map, col=cl)
 
 dev.off()
 
-# per fare un nuovo grafico delle due carte ottenute
 par(mfrow=c(1,2))
 plot(d1c$map, col=cl)
 plot(d2c$map, col=cl)
 
-# per visualizzare la suddivisione dei pixel nelle classi
+# FUNZIONE freq() PER VISUALIZZARE LA SUDDIVISIONE DEI PIXEL NELLE CLASSI
 freq(d1c$map)
 # aree altre: 35516
 # foresta: 305776
 
-totd1 <- 305776 + 35516 # Numero pixel carta
+totd1 <- 305776 + 35516 # numero pixel carta
 totd1
 # 341292
 
-# per calcolare le proporzioni, la percentuale delle frequenze
+# PER CALCOLARE LE PROPORZIONI, LA PERCENTUALE DELLE FREQUENZE
 percent1 <- freq(d1c$map)*100/totd1
 percent1
 
@@ -815,7 +861,7 @@ percent1
 # aree altre: 10.4
 # foreste: 89.6
 
-# fare lo stesso procedimento per la carta 2
+# STESSO PROCEDIMENTO PER LA CARTA 2
 freq(d2c$map)
 # aree altre: 164321
 # foreste: 178405
@@ -830,7 +876,7 @@ percent2
 # aree altre: 48
 # foreste: 52
 
-# per creare un dataframe con i dati
+# CREARE UN DATAFRAME CON QUESTI DATI
 cover <- c("Agriculture","Forest")
 before <- c(10.4,89.6)
 after <- c(48,52)
@@ -839,9 +885,8 @@ View(output)
 
 dev.off()
 
-### Giorno 2 
-
-install.packages("gridExtra")
+### GIORNO 2
+    
 library(gridExtra)
 
 setwd("C:/lab/") # windows
