@@ -2,8 +2,9 @@
 ### codice R progetto per esame di ecologia del paesaggio 
 
 # pacchetti utilizzati 
-
+install.packages("ncdf4")
 library(raster)
+library(ncdf4)
 
 setwd("E:/ecuador")
 
