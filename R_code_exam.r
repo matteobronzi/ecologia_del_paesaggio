@@ -857,7 +857,7 @@ totd1
 percent1 <- freq(d1c$map)*100/totd1
 percent1
 
-# percentuali:
+# PERCENTUALI:
 # aree altre: 10.4
 # foreste: 89.6
 
@@ -890,19 +890,17 @@ dev.off()
 library(gridExtra)
 
 setwd("C:/lab/") # windows
-
-#caricare l'area di lavoro 
+    
 load("defor.RData")
 ls()
 library(raster)
- 
-# plottare le due mappe 
+  
 par(mfrow=c(1,2))
 cl <- colorRampPalette(c('black','green'))(100)
 plot(d1c$map, col=cl)
 plot(d2c$map, col=cl)
 
-# copertura 
+# COPERTURA DI SUOLO
 cover <- c("Agriculture","Forest")
 before <- c(10.9,89.1)
 after <- c(48.2,51.8)
@@ -910,27 +908,26 @@ after <- c(48.2,51.8)
 output <- data.frame(cover,before,after)
 output
 
-# richiamare la libreria ggplot2
 library(ggplot2)
 
-# istogramma della % di copertura prima della deforestazione
+# ISTOGRAMMA DELLA % DI COPERTURA PRIMA DELLA DEFORESTAZIONE
 ggplot(output, aes(x=cover, y=before, color=cover)) +
 geom_bar(stat="identity", fill="white")
 
 dev.off()
 
-# Exercise: fare lo stesso procedimento per il dopo deforestazione ("after") 
+# ESERCIZIO: fare lo stesso procedimento per il dopo deforestazione ("after") 
 ggplot(output, aes(x=cover, y=after, color=cover)) +
 geom_bar(stat="identity", fill="white")
 
-# assegnare un nome agli istogrammi 
+# ASSEGNARE UN NOME AGLI ISTOGRAMMI
 grafico1 <- ggplot(output, aes(x=cover, y=before, color=cover)) +
 geom_bar(stat="identity", fill="white")
 
 grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) +
 geom_bar(stat="identity", fill="white")
 
-# Exercise: utilizzare la funzione grid.arrange(plot1, plot2, nrow=n) per unire i due grafici
+# ESERCIZIO: utilizzare la funzione grid.arrange(plot1, plot2, nrow=n) per unire i due grafici
 grid.arrange(grafico1, grafico2, nrow=1)
 
 ##############################################
@@ -941,17 +938,19 @@ grid.arrange(grafico1, grafico2, nrow=1)
 
 # R CODE PER ANALISI MULTITEMPORALE DEI DATI DI NO2 OTTENUTI DA IMMAGINI ELABORATE DAL PROGETTO COPERNICUS 
 
+# PACCHETTI UTILIZZATI: "raster"   
+
+#install.packages("raster")
+library(raster)
+    
 setwd("C:/Lab") # windows
 
-# richiamare la libreria raster
-library(raster)
-
-# importare e visualizzare l'immagine EN_0001.png
+# IMPORTARE E VISUALIZZARE L'IMMAGINE EN_0001.png
 EN01 <- raster("EN_0001.png")
 plot(EN01)
 
-# Exercise: importare tutte le altre immagini EN 
-# possibile utilizzare anche un "ciclo for" che importa automaticamente le immagini richieste
+# ESERCIZIO: importare tutte le altre immagini EN 
+# NOTE: è possibile utilizzare anche un "ciclo for" che importa automaticamente le immagini richieste
 EN01 <- raster("EN_0001.png")
 EN02 <- raster("EN_0002.png")
 EN03 <- raster("EN_0003.png")
@@ -966,22 +965,21 @@ EN11 <- raster("EN_0011.png")
 EN12 <- raster("EN_0012.png")
 EN13 <- raster("EN_0013.png")
 
-# per introdurre una palette di colori 
 cl <- colorRampPalette(c('red','orange','yellow'))(100) 
 
-# per plottare l'immagine iniziale (EN01) e l'immagine finale (EN13)
+# PLOTTARE L'IMMAGINE INIZIALE E L'IMMAGINE FINALE 
 par(mfrow=c(1,2))
 plot(EN01, col=cl)
 plot(EN13, col=cl)
 
 dev.off()
 
-# differenza fra EN13 ed EN01
+# DIFFERENZA FRA EN13 ED EN01
 difno2 <- EN13 - EN01
 cldif <- colorRampPalette(c('blue','black','yellow'))(100) #
 plot(difno2, col=cldif)
 
-# per plottare tutte le immagini
+# PLOTTATR TUTTE LE IMMAGINI
 par(mfrow=c(4,4))
 plot(EN01, col=cl)
 plot(EN02, col=cl)
@@ -997,32 +995,31 @@ plot(EN11, col=cl)
 plot(EN12, col=cl)
 plot(EN13, col=cl)
 
-### Giorno 2
+### GIORNO 2
 
 library(raster)
 
-# entrare nella cartella esa_no2 all'interno della cartella Lab
+# ENTRARE NELLA CARTELLA esa_no2 ALL'INTERNO DELLA CARTELLA DI LAVORO (Lab)
 setwd("C:/lab/esa_no2")
 
-# per assegnare a rlist la lista di file .png
+# FUNZIONE list.files() PER ASSEGNARE A rlist LA LISTA DI TUTTI I FILE ".png" ALL'INTERNO DELLA CARTELLA esa_no2
 rlist <- list.files(pattern=".png")
 rlist
 
-# 
 listafinale <- lapply(rlist, raster)
-
-#
 EN <- stack(listafinale)
 
-# scorporare lo stack per andare a fare un'operazione di differenza fra due immagini
+# SCORPORARE LO stack PER ANDARE AD ANALIZZARE LA DIFFERENZA FRA DUE IMMAGINI
 difEN <- EN$EN_0013 - EN$EN_0001
 
 cld <- colorRampPalette(c('blue','white','red'))(100) # 
 plot(difEN, col=cld)
 
+# FUNZIONE boxplot() PER COSTRUIRE UN DIAGRAMMA DEL TIPO "boxplot"
+# horizontal= T (TRUE) PER COSTRUIRE IL GRAFICO ORIZZONTALMENTE 
 boxplot(EN, horizontal=T)
 
-# per eliminare gli out layers
+# outline=F (FALSE) PER ELIMINARE GLI OUTLAYERS 
 boxplot(EN, horizontal=T,outline=F,axes=T) # axes=T argomento di defoult riguardante gli assi del grafico
     
 ##############################################
@@ -1033,30 +1030,28 @@ boxplot(EN, horizontal=T,outline=F,axes=T) # axes=T argomento di defoult riguard
 
 # CODICE R PER ANALISI MULTITEMPORALE DELLA COPERTURA NEVOSA ATTRAVERSO IMMAGINI TELERILEVATE
 
-# pacchetti necessari
-install.packages("ncdf4")
+# PACCHETTI UTILIZZATI: "raster", "ncdf4"
+
+# install.packages("ncdf4")
+# install.packages("raster")
 library(ncdf4)
-install.packages("raster")
 library(raster)
 
 setwd("C:/Lab/") # windows
 
-# caricare l'immagine raster 
 snowmay <- raster("c_gls_SCE500_202005180000_CEURO_MODIS_V1.0.1.nc")
-
-# stabilire una color ramp 
+    
 cl <- colorRampPalette(c('darkblue','blue','light blue'))(100)
 
-# plottare l'immagine snowmay con la color ramp cl
 plot(snowmay, col=cl)
 
-### Import snow data
+### IMPORTARE I DATI RELATIVI ALLA COPERTURA NEVOSA
 
 setwd("C:/Lab/snow/") # windows
 
 rlist=list.files(pattern=".tif", full.names=T)
 
-# inserire tutti i file in una lista con lappy
+# FUNZIONE lappy() PER INSERIRE TUTTI I FILES IN UNA LISTA 
 list_rast=lapply(rlist, raster)
 snow.multitemp <- stack(list_rast)
 snow.multitemp
@@ -1074,16 +1069,16 @@ par(mfrow=c(1,2))
 plot(snow.multitemp$snow2000r, col=cl, zlim=c(0,250))
 plot(snow.multitemp$snow2020r, col=cl, zlim=c(0,250))
 
-# plottare la differenza fra snow2020 e snow2000
+# PLOTTARE LA DIFFERENZA FRA snow2020 E snow2000
 difsnow = snow.multitemp$snow2020r - snow.multitemp$snow2000r
 cldiff <- colorRampPalette(c('blue','white','red'))(100) 
 plot(difsnow, col=cldiff)
 
-### Per caricare su R un intero script dall'esterno
-# scaricare il file prediction.r da IOL e portarlo nella cartella snow
+# FUNZIONE source() PER IMPORTARE UN INTERO SCRIPT DALL'ESTERNO
+# SCARICARE IL FILE prediction.r DA IOL (Corso Ecologia del Paesaggio)E PORTARLO NELLA CARTELLA SNOW
 source("prediction.r")
 
-# scaricare il file predicted.snow.2025.norm da IOL
+# SCARICARE IL FILE predicted.snow.2025.norm DA IOL
 predicted.snow.2025.norm <- raster("predicted.snow.2025.norm.tif")
 plot(predicted.snow.2025.norm, col=cl)
     
@@ -1091,35 +1086,34 @@ plot(predicted.snow.2025.norm, col=cl)
 ##############################################
 ##############################################
 
-### R CODE PATCHES 
+### 10. R CODE PATCHES 
     
 # CODICE R PER ANALISI DELLA FRAMMENTAZIONE DEGLI ECOSISTEMI
 
-install.packages("raster")
+# PACCHETTI UTILIZZATI: "raster", "igraph", "ggplot2"
+
+# install.packages("raster") 
+# install.packages("igraph") 
+# install.packages("ggplot2")
 library(raster)
-install.packages("igraph")
 library(igraph)
-install.packages("ggplot2")
 library(ggplot2)
 
-# per entrare nella cartella di lavoro
 setwd("C:/Lab/") # windows
 
-# per importare le due immagini
 d1c <- raster("d1c.tif")
 d2c <- raster("d2c.tif")
 
-# plottare le due immagini 
 par(mfrow=c(1,2))
 cl <- colorRampPalette(c('black','green'))(100) #
 plot(d1c,col=cl)
 plot(d2c,col=cl)
 
-# riclassificazione della prima immagine
+# FUNZIONE reclassify() PER RICLASSIFICARE LA PRIMA IMMAGINE
 # land cover 1= agriculture; land cover 2=forest
 d1c.for <- reclassify(d1c, cbind(1, NA))
 
-# plottare l'immagine riclassificata con l'immagine originale
+# PLOTTARE L'IMMAGINE RICLASSIFICATA CON L'IMMAGINE NORMALE
 par(mfrow=c(1,2))
 cl <- colorRampPalette(c('black','green'))(100) #
 plot(d1c,col=cl)
@@ -1127,10 +1121,10 @@ plot(d1c.for,col=cl)
 
 dev.off()
 
-# riclassificazione della seconda immagine
+# RICLASSIFICAZIONE DELLA SECONDA IMMAGINE 
 d2c.for <- reclassify(d2c, cbind(1, NA))
 
-# plottare le due immagini riclassificate 
+# PLOTTARE LE DUE IMMAGINI RICLASSIFICATE 
 par(mfrow=c(1,2))
 cl <- colorRampPalette(c('black','green'))(100) #
 plot(d1c.for,col=cl)
@@ -1138,21 +1132,20 @@ plot(d2c.for,col=cl)
 
 dev.off()
 
-# funzione clump aggrage i pixels vicini per formare un'unica patche
+# FUNZIONE clump() PER RAGGRUPPARE I PIXELS VICINI PER FORMARE UN'UNICA PATCH
 d1c.for.patches <- clump(d1c.for)
 d2c.for.patches <- clump(d2c.for)
 
-# plottare le due immagini riclassificate 
 par(mfrow=c(1,2))
 cl <- colorRampPalette(c('black','green'))(100) #
 plot(d1c.for.patches,col=cl)
 plot(d2c.for.patches,col=cl)
 
-# per salvare il raster nella cartella di lavoro
+# FUNZIONE writeRaster PER SALVARE IL RASTER NELLA CARTELLA DI LAVORO
 writeRaster(d1c.for.patches, "d1c.for.patches.tif")
 writeRaster(d2c.for.patches, "d2c.for.patches.tif")
 
-#Exercise: plottare con un'altra color palette
+# ESERCIZIO: plottare con un'altra color palette
 clp <- colorRampPalette(c('dark blue','blue','green','orange','yellow','red'))(100) # 
 par(mfrow=c(1,2))
 plot(d1c.for.patches, col=clp)
@@ -1161,7 +1154,7 @@ plot(d2c.for.patches, col=clp)
 # max patches d1 = 301
 # max patches d2 = 1212
 
-# analisi multitemporale del numero di patches
+# ANALISI MULTITEMPORALE DEL NUMERO DI PATCHES
 time <- c("Before deforestation","After deforestation")
 npatches <- c(301,1212)
 
@@ -1175,13 +1168,15 @@ ggplot(output, aes(x=time, y=npatches, color="red")) + geom_bar(stat="identity",
 ##############################################
 ##############################################
 
-### 11. R code crop
+### 11. R CODE CROP
 
-# Crop an image
+# CODICE R PER IL RITAGLIO DI UN RASTER 
 
-install.packages("raster")
+# PACCHETTI UTILIZZATI: "raster", "RStoolbox"
+
+# install.packages("raster") 
+# install.packages("RStoolBox")
 library(raster)
-install.packages("RStoolBox")
 library(RStoolbox)
 
 setwd("C:/Lab/") # per windows
@@ -1189,23 +1184,23 @@ setwd("C:/Lab/") # per windows
 rlist <- list.files(pattern="snow")
 rlist 
 
-#save raster into list
-#con lappy
+
+# SALVARE IL RASTER NELLA LISTA CON LA FUNZIONE lappy()
 list_rast=lapply(rlist, raster)
 snow.multitemp <- stack(list_rast)
 
 clb <- colorRampPalette(c('dark blue','blue','light blue'))(100) 
 
-# plot to see italian coordinates
+# PLOTTARE LA MAPPA PER VEDERE LE COORDINATE DELL'ITALIA
 
 snow.multitemp
 
 plot(snow.multitemp$snow2010r, col=clb)
 
-# zoom con extent
+# FUNZIONE extent PER FARE UNO ZOOM 
 extension <- c(6, 18, 40, 50)
 
-# zoom
+# ZOOM
 zoom(snow.multitemp$snow2010r, ext=extention)
     
 ##############################################
@@ -1215,16 +1210,17 @@ zoom(snow.multitemp$snow2010r, ext=extention)
 ### 12. R CODE SDM 
 
 # CODICE R PER LO SPECIES DISTRIBUTION MODELLING
-    
-### 12. Species Distribution Modelling
+   
+# PACCHETTI UTILIZZATI: "raster", "sdm", "rgdal"
 
+# install.packages("raster")
 # install.packages("sdm")
 # install.packages("rgdal")
-library(sdm)
 library(raster)
+library(sdm)
 library(rgdal)
 
-# species
+# SPECIES
 file <- system.file("external/species.shp", package="sdm") 
 species <- shapefile(file)
 
@@ -1236,7 +1232,8 @@ plot(species[species$Occurrence == 1,],col='blue',pch=16)
 
 points(species[species$Occurrence == 0,],col='red',pch=16)
 
-# environmental variables
+# VARIABILI AMBIENTALI
+
 path <- system.file("external", package="sdm") 
 
 lst <- list.files(path=path,pattern='asc$',full.names = T) #
@@ -1259,7 +1256,7 @@ points(species[species$Occurrence == 1,], pch=16)
 plot(preds$vegetation, col=cl)
 points(species[species$Occurrence == 1,], pch=16)
 
-# model
+# MODELLO
 
 d <- sdmData(train=species, predictors=preds)
 d
