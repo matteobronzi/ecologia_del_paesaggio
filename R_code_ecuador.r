@@ -38,3 +38,21 @@ plot(ecuador2010)
 plot(ecuador2015)
 plot(ecuador2020)
 
+dev.off()
+
+# carico shapefile relativo alle zone di estrazione petrolifera
+petrolio <- shapefile("petroleo.shp")
+
+# plotto l'indice NDVI del 2020 con lo shapefile delle zone di estrazione
+plot(ecuador2020)
+plot(petrolio, add=T)
+
+dev.off()
+
+# carico shapefile relativo ad i territori indigeni 
+terr_indigeni <- shapefile("Tis_TerritoriosIndigenas.shp")
+
+# plotto l'indice NDVI del 2020 con lo shapefile dei territori indigeni
+plot(ecuador2020)
+plot(terr_indigeni, add=T)
+
