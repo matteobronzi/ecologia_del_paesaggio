@@ -26,10 +26,14 @@ ndvi2020 <- raster("c_gls_NDVI_202001110000_GLOBE_PROBAV_V2.2.1(1).nc")
 # ritaglio la porzione dell'immagine relativa all'Ecuador
 
 ext <- c(-81,-75,-5,2)
-
 ecuador2005 <- crop(ndvi2005, ext)
 ecuador2010 <- crop(ndvi2010, ext)
 ecuador2015 <- crop(ndvi2015, ext)
 ecuador2020 <- crop(ndvi2020, ext)
 
-
+# plotto le mappe ritagliate dell'ecuador dei diversi anni
+par(mfrow=c(4,2))
+plot(ecuador2005)
+plot(ecuador2010)
+plot(ecuador2015)
+plot(ecuador2020)
