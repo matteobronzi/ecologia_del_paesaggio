@@ -755,8 +755,7 @@ ls()
 
 
 p224r63_2011 <- brick("p224r63_2011_masked.grd")
-install.packages("RStoolbox")
-library(RStoolbox)
+
 
 # RGB
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
