@@ -1,5 +1,9 @@
 
-### codice R progetto per esame di ecologia del paesaggio 
+### CODICE R progetto per esame di ecologia del paesaggio 
+
+# dati da:
+# NDVI: https://land.copernicus.eu/global/themes/vegetation
+# SHAPEFILE: https://www.amazoniasocioambiental.org/en/maps/
 
 # pacchetti utilizzati: "raster", "ncdf4", "ggplot2", "RStoolbox", "rgdal" 
 
@@ -55,4 +59,20 @@ terr_indigeni <- shapefile("Tis_TerritoriosIndigenas.shp")
 # plotto l'indice NDVI del 2020 con lo shapefile dei territori indigeni
 plot(ecuador2020)
 plot(terr_indigeni, add=T)
+
+# carico le immagini di copernicus insieme 
+# creo una lista che comprenda tutti i file di estensione ".nc" contenuti all'interno della cartella di lavoro (ecuador)
+ecuador_list <- list.files(pattern=".nc")
+final_list <- lapply(ecuador_list, raster)
+globo_NDVI <- stack(final_list)
+plot(globo_NDVI)
+
+# (aggiungere commento)
+ecuador_NDVI <- crop(globo_NDVI, ext)
+plot(ecuador_NDVI)
+plotRGB(ecuador_NDVI, r=4, g=3, b=2, stretch="Lin")
+
+### Analisi delle patches
+
+
 
