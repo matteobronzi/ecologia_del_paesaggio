@@ -37,3 +37,4 @@ plot(ecuador2005)
 plot(ecuador2010)
 plot(ecuador2015)
 plot(ecuador2020)
+
