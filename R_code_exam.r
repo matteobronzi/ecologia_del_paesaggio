@@ -1449,5 +1449,5 @@ npatches <- c(879,4848)
 output <- data.frame(time,npatches)
 attach(output)
 
-ggplot(output, aes(x=time, y=npatches, color="red")) + geom_bar(stat="identity", fill="white")
+ggplot(output, aes(x=time, y=npatches, color="red")) + geom_bar(stat="identity", fill="dark blue")
 
