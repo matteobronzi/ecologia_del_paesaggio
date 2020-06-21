@@ -100,6 +100,9 @@ clclass <- colorRampPalette(c('dark green', 'yellow'))(100)
 ecuador2005_rec <- unsuperClass(ecuador2005, nClasses=2)
 ecuador2020_rec <- unsuperClass(ecuador2020, nClasses=2)
 
+ecuador2005_rec
+ecuador2020_rec 
+
 plot(ecuador2005_rec$map, col=clclass)
 
 dev.off()
@@ -118,8 +121,14 @@ clclass2 <- colorRampPalette(c('dark green', 'white')) (100)
 ecuador2005_for <- reclassify(ecuador2005_rec$map, cbind(2, NA))
 ecuador2020_for <- reclassify(ecuador2020_rec$map, cbind(2, NA))
 
+ecuador2005_for
+ecuador2020_for
+
 ecuador2005_for.patches <- clump(ecuador2005_for)
 ecuador2020_for.patches <- clump(ecuador2020_for)
+
+ecuador2005_for.patches
+ecuador2020_for.patches
 
 # numero patches:
 # 2005: 879
