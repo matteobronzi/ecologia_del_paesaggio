@@ -1323,7 +1323,7 @@ plot(ecuador2010, col=cl)
 
 dev.off()
 
-par(mfrow=c(1,2))
+par(mfrow=c(1,2,))
 plot(ecuador2010, col=cl)
 plot(ecuador2015, col=cl)
 
@@ -1333,19 +1333,14 @@ par(mfrow=c(1,2))
 plot(ecuador2015, col=cl)
 plot(ecuador2020, col=cl)
 
-# PLOTTE LE MAPPE RITAGLIATE DELL'ECUADOR DEI DIVERSI ANNI 
-par(mfrow=c(4,2))
+# PLOTTO LE MAPPE RITAGLIATE DELL'ECUADOR DEI DIVERSI ANNI 
+par(mfrow=c(2,4))
 plot(ecuador2005, col=cl)
 plot(ecuador2010, col=cl)
 plot(ecuador2015, col=cl)
 plot(ecuador2020, col=cl)
 
 dev.off()
-
-# PLOTTARE MAPPA INIZIALE CON MAPPA FINALE
-par(mfrow=c(1,2))
-plot(ecuador2005, col=cl)
-plot(ecuador2020, col=cl)
 
 # CARICO LO shapefile DELLE ZONE RELATIVE AI PROCESSI DI ESTRAZIONE PETROLIFERA (dati da : Amazonia Socioambiental)
 petrolio <- shapefile("petroleo.shp")
@@ -1368,7 +1363,7 @@ plot(terr_indigeni, add=T)
 ecuador_list <- list.files(pattern=".nc")
 final_list <- lapply(ecuador_list, raster)
 globo_NDVI <- stack(final_list)
-plot(globo_NDVI)
+# plot(globo_NDVI)
 
 dev.off()
 
@@ -1410,8 +1405,8 @@ plot(ecuador2020_rec$map, col=clclass)
 dev.off()
 
 par(mfrow=c(1,2))
-plot(ecuador2005_rec$map, col=clclass, las=1)
-plot(ecuador2020_rec$map, col=clclass, las=1)
+plot(ecuador2005_rec$map, col=clclass, las=1, main="Before Deforestation")
+plot(ecuador2020_rec$map, col=clclass, las=1, main="After Deforestation)
 
 dev.off()
 
@@ -1432,14 +1427,15 @@ ecuador2020_for.patches
 # 2005: 879
 # 2020: 4848
 
+# FUNZIONE writeRaster() PER SALVARE LE MAPPE DELLE PATCH IN FORMATO .tif ALL'INTERNO DELLA CARTELLA DI LAVORO
 writeRaster(ecuador2005_for.patches, "ecuador2005_for.patches.tif")
 writeRaster(ecuador2020_for.patches, "ecuador2020_for.patches.tif")
 
 clp <- colorRampPalette(c('dark blue','blue','green','orange','yellow','red'))(100) # 
 
 par(mfrow=c(1,2))
-plot(ecuador2005_for.patches,col=clp)
-plot(ecuador2020_for.patches,col=clp)
+plot(ecuador2005_for.patches,col=clp, main="Before Deforestation")
+plot(ecuador2020_for.patches,col=clp, main="After Deforestation")
 
 # ANALISI MULTITEMPORALE DEL NUMERO DI PATCHES
 
@@ -1449,5 +1445,6 @@ npatches <- c(879,4848)
 output <- data.frame(time,npatches)
 attach(output)
 
-ggplot(output, aes(x=time, y=npatches, color="red")) + geom_bar(stat="identity", fill="dark blue")
+ggplot(output, aes(x=time, y=npatches, color="red")) + geom_bar(stat="identity", fill=" dark blue")
+
 
