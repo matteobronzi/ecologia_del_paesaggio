@@ -89,29 +89,61 @@ dev.off()
 ecuador_NDVI <- crop(globo_NDVI, ext)
 plotRGB(ecuador_NDVI, r=4, g=3, b=2, stretch="Lin")
 
+dev.off()
+
 ### Analisi delle patches
 
-ecuador2005_for <- reclassify(ecuador2005, cbind(1, NA))
-ecuador2015_for <- reclassify(ecuador2015, cbind(1, NA))
-ecuador2020_for <- reclassify(ecuador2020, cbind(1, NA))
+# FUNZIONE unsuperClass() PER RICLASSIFICARE L'IMMAGINE UTILIZZANDO 2 CLASSI DI PIXELS
 
-cl2 <- colorRampPalette(c('black','green'))(100)
+clclass <- colorRampPalette(c('dark green', 'yellow'))(100) 
+
+ecuador2005_rec <- unsuperClass(ecuador2005, nClasses=2)
+ecuador2020_rec <- unsuperClass(ecuador2020, nClasses=2)
+
+plot(ecuador2005_rec$map, col=clclass)
+
+dev.off()
+
+plot(ecuador2020_rec$map, col=clclass)
+
+dev.off()
+
 par(mfrow=c(1,2))
-plot(ecuador2015_for, col= cl2)
-plot(ecuador2015, col= cl)
+plot(ecuador2005_rec$map, col=clclass, las=1)
+plot(ecuador2020_rec$map, col=clclass, las=1)
+
+dev.off()
+
+clclass2 <- colorRampPalette(c('dark green', 'white')) (100)
+ecuador2005_for <- reclassify(ecuador2005_rec$map, cbind(2, NA))
+ecuador2020_for <- reclassify(ecuador2020_rec$map, cbind(2, NA))
 
 ecuador2005_for.patches <- clump(ecuador2005_for)
-ecuador2015_for.patches <- clump(ecuador2015_for)
 ecuador2020_for.patches <- clump(ecuador2020_for)
 
-par(mfrow=c(1,2))
-plot(ecuador2005_for.patches,col=cl2)
-plot(ecuador2020_for.patches,col=cl2)
+# numero patches:
+# 2005: 879
+# 2020: 4848
+
+writeRaster(ecuador2005_for.patches, "ecuador2005_for.patches.tif")
+writeRaster(ecuador2020_for.patches, "ecuador2020_for.patches.tif")
 
 clp <- colorRampPalette(c('dark blue','blue','green','orange','yellow','red'))(100) # 
+
 par(mfrow=c(1,2))
-plot(ecuador2005_for.patches, col=clp)
-plot(ecuador2020_for.patches, col=clp)
+plot(ecuador2005_for.patches,col=clp)
+plot(ecuador2020_for.patches,col=clp)
+
+# ANALISI MULTITEMPORALE DEL NUMERO DI PATCHES
+
+time <- c("1.Before deforestation","2.After deforestation")
+npatches <- c(879,4848)
+
+output <- data.frame(time,npatches)
+attach(output)
+
+ggplot(output, aes(x=time, y=npatches, color="red")) + geom_bar(stat="identity", fill="white")
+
 
 
 
