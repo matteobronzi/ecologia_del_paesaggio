@@ -91,7 +91,7 @@ plot(terr_indigeni, add=T)
 ecuador_list <- list.files(pattern=".nc")
 final_list <- lapply(ecuador_list, raster)
 globo_NDVI <- stack(final_list)
-plot(globo_NDVI)
+# plot(globo_NDVI)
 
 dev.off()
 
@@ -133,8 +133,8 @@ plot(ecuador2020_rec$map, col=clclass)
 dev.off()
 
 par(mfrow=c(1,2))
-plot(ecuador2005_rec$map, col=clclass, las=1)
-plot(ecuador2020_rec$map, col=clclass, las=1)
+plot(ecuador2005_rec$map, col=clclass, las=1, main="Before Deforestation")
+plot(ecuador2020_rec$map, col=clclass, las=1, main="After Deforestation)
 
 dev.off()
 
@@ -161,8 +161,8 @@ writeRaster(ecuador2020_for.patches, "ecuador2020_for.patches.tif")
 clp <- colorRampPalette(c('dark blue','blue','green','orange','yellow','red'))(100) # 
 
 par(mfrow=c(1,2))
-plot(ecuador2005_for.patches,col=clp)
-plot(ecuador2020_for.patches,col=clp)
+plot(ecuador2005_for.patches,col=clp, main="Before Deforestation")
+plot(ecuador2020_for.patches,col=clp, main="After Deforestation")
 
 # ANALISI MULTITEMPORALE DEL NUMERO DI PATCHES
 
