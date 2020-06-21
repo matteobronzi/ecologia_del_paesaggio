@@ -179,3 +179,4 @@ ggplot(output, aes(x=time, y=npatches, color="red")) + geom_bar(stat="identity",
 
 
 
+
