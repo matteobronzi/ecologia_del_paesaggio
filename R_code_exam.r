@@ -1359,7 +1359,7 @@ plot(ecuador2020, col=cl)
 plot(terr_indigeni, add=T)
 
 # CARICO LE IMMAGINI DI COPERNICUS INSIEME 
-# CREO UNA LISTE CHE COMPRENDA TUTTI I FILE DI ESTENZIONE ".nc" CONTENUTI ALL'INTERNO DELLA CARTELLA DI LAVORO (ecuador)
+# CREO UNA LISTA CHE COMPRENDA TUTTI I FILE DI ESTENZIONE ".nc" CONTENUTI ALL'INTERNO DELLA CARTELLA DI LAVORO (ecuador)
 ecuador_list <- list.files(pattern=".nc")
 final_list <- lapply(ecuador_list, raster)
 globo_NDVI <- stack(final_list)
