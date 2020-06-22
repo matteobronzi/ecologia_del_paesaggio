@@ -1345,7 +1345,7 @@ dev.off()
 # CARICO LO shapefile DELLE ZONE RELATIVE AI PROCESSI DI ESTRAZIONE PETROLIFERA (dati da : Amazonia Socioambiental)
 petrolio <- shapefile("petroleo.shp")
 
-# PLOTTO L'INDIVE NDVI DEL 2020 CON LO shapefile DELLE ZONE DI ESTRAZIONE
+# PLOTTO L'INDICE NDVI DEL 2020 CON LO shapefile DELLE ZONE DI ESTRAZIONE
 plot(ecuador2020, col=cl)
 plot(petrolio, add=T)
 
