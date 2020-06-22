@@ -1339,6 +1339,13 @@ plot(ecuador2005, col=cl)
 plot(ecuador2010, col=cl)
 plot(ecuador2015, col=cl)
 plot(ecuador2020, col=cl)
+    
+dev.off()
+    
+# PLOTTO LA DIFFERENZA FRA L'NDVI DEL 2020 E QUELLO DEL 2005
+cldif <- colorRampPalette(c('white', 'grey', 'dark grey', 'black')) (200)
+difecuador <- ecuador2020 - ecuador2005
+plot(difecuador, col=cldif)
 
 dev.off()
 
